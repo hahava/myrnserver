@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -15,7 +16,7 @@ public class UserProfileController {
 	private UserProfileRepository userProfileRepository;
 
 	@GetMapping("/user/profile/{id}")
-	public ResponseEntity<UserProfile> getUserProfile(Long id) {
+	public ResponseEntity<UserProfile> getUserProfile(@PathVariable Long id) {
 		return new ResponseEntity<>(userProfileRepository.findById(id).get(), HttpStatus.OK);
 	}
 
