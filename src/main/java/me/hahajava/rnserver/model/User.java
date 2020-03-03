@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Getter
 @Setter
-public class UserProfile {
+public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

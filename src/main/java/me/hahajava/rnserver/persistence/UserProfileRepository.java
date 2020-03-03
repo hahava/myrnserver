@@ -1,7 +1,7 @@
 package me.hahajava.rnserver.persistence;
 
-import me.hahajava.rnserver.model.UserProfile;
+import me.hahajava.rnserver.model.User;
 import org.springframework.data.repository.CrudRepository;
 
-public interface UserProfileRepository extends CrudRepository<UserProfile, Long> {
+public interface UserProfileRepository extends CrudRepository<User, Long> {
 }
