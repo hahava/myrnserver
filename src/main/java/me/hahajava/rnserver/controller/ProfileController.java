@@ -16,9 +16,9 @@ public class ProfileController {
 	@Autowired
 	private ProfileRepository profileRepository;
 
-	@GetMapping("/profile/{id}")
-	public ResponseEntity<Profile> getProfile(@PathVariable Long id) {
-		return new ResponseEntity<>(profileRepository.findById(id).get(), HttpStatus.OK);
+	@GetMapping("/profile/{userId}")
+	public ResponseEntity<Profile> getProfile(@PathVariable String userId) {
+		return new ResponseEntity<>(profileRepository.findByUserId(userId), HttpStatus.OK);
 	}
 
 	@PostMapping("/profile")
