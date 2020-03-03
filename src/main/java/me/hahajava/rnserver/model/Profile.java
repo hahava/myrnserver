@@ -10,24 +10,20 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Getter
 @Setter
-public class User {
+public class Profile {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long no;
 
 	@NotNull
-	@Column(nullable = false, unique = true)
-	private String userId;
+	private String userName;
 
 	@NotNull
-	@Column(nullable = false)
-	private String userPw;
+	private String phoneNo;
 
-	@NotNull
-	private String token;
-
+	@OneToOne
+	@MapsId
 	@JsonIgnore
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-	private Profile profile;
+	private User user;
 }
