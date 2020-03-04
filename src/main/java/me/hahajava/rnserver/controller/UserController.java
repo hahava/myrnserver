@@ -15,9 +15,9 @@ public class UserController {
 	@Autowired
 	private UserRepository userRepository;
 
-	@GetMapping("/user/{id}")
-	public ResponseEntity<User> getUserProfile(@PathVariable Long id) {
-		return new ResponseEntity<>(userRepository.findById(id).get(), HttpStatus.OK);
+	@GetMapping("/user/{userId}")
+	public ResponseEntity<User> getUserProfile(@PathVariable String userId) {
+		return new ResponseEntity<>(userRepository.findById(userId), HttpStatus.OK);
 	}
 
 	@PostMapping("/user")
