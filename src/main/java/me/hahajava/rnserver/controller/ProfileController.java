@@ -23,19 +23,29 @@ public class ProfileController {
 	@Autowired
 	private UserRepository userRepository;
 
+	@ExceptionHandler(NoSuchElementException.class)
+	public Map<String, String> wrongParameterResponse(Exception e) {
+		return Collections.singletonMap("message", e.getMessage());
+	}
+
 	@GetMapping("/profile/{userId}")
 	public ResponseEntity<Profile> getProfile(@PathVariable String userId) {
 		return new ResponseEntity<>(profileRepository.findByUserId(userId), HttpStatus.OK);
 	}
 
 	@PostMapping("/profile")
-	public Map<String, String> addProfile(@RequestBody Profile profile) {
+	public Map<String, String> addProfile(@RequestBody Profile newProfile) {
 		User user = Optional
-			.ofNullable(userRepository.findById(profile.getUser().getId()))
+			.ofNullable(userRepository.findById(newProfile.getUser().getId()))
 			.orElseThrow(() -> new NoSuchElementException("user 정보를 확인할 수 없습니다."));
 
-		profileRepository.addProfileByUserNo(user.getUserNo(), profile.getPhoneNo(), profile.getPhoneNo());
-		return Collections.singletonMap("message", "success");
+		Profile profile = profileRepository.findByUserId(user.getId());
+		if (profile == null) {
+			profileRepository.addProfileByUserNo(user.getUserNo(), newProfile.getPhoneNo(), newProfile.getPhoneNo());
+			return Collections.singletonMap("message", "success");
+		}
+
+		return Collections.singletonMap("message", "profile 이 존재합니다.");
 	}
 
 	@PutMapping("/profile")
@@ -49,11 +59,6 @@ public class ProfileController {
 
 		profileRepository.save(profile);
 		return Collections.singletonMap("message", "succes");
-	}
-
-	@ExceptionHandler(NoSuchElementException.class)
-	public Map<String, String> response(Exception e) {
-		return Collections.singletonMap("message", e.getMessage());
 	}
 
 }
