@@ -38,9 +38,22 @@ public class ProfileController {
 		return Collections.singletonMap("message", "success");
 	}
 
+	@PutMapping("/profile")
+	public Map<String, String> changeProfile(@RequestBody Profile newProfile) {
+		Profile profile = Optional
+			.ofNullable(profileRepository.findByUserId(newProfile.getUser().getId()))
+			.orElseThrow(() -> new NoSuchElementException("User 정보를 확인 할 수 없습니다."));
+
+		Optional.ofNullable(newProfile.getPhoneNo()).ifPresent(profile::setPhoneNo);
+		Optional.ofNullable(newProfile.getUserName()).ifPresent(profile::setUserName);
+
+		profileRepository.save(profile);
+		return Collections.singletonMap("message", "succes");
+	}
+
 	@ExceptionHandler(NoSuchElementException.class)
-	public String response(Exception e) {
-		return e.getMessage();
+	public Map<String, String> response(Exception e) {
+		return Collections.singletonMap("message", e.getMessage());
 	}
 
 }
