@@ -1,6 +1,6 @@
 package me.hahajava.rnserver.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +8,8 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 
 @Entity
 @Getter
@@ -29,5 +31,6 @@ public class Profile {
 	@OneToOne
 	@MapsId
 	@JsonUnwrapped
+	@JsonProperty(access = WRITE_ONLY)
 	private User user;
 }
