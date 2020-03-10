@@ -5,6 +5,7 @@ import me.hahajava.rnserver.persistence.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,9 @@ import javax.validation.Valid;
 public class UserController {
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@GetMapping("/user/{userId}")
 	public ResponseEntity<User> getUserProfile(@PathVariable String userId) {
@@ -25,6 +29,10 @@ public class UserController {
 		if (br.hasErrors()) {
 			return new ResponseEntity<>(br.getAllErrors().get(0).toString(), HttpStatus.BAD_REQUEST);
 		}
+
+		String cryptPassword = passwordEncoder.encode(user.getUserPw());
+		user.setUserPw(cryptPassword);
+
 		userRepository.save(user);
 		return new ResponseEntity<>("success", HttpStatus.OK);
 	}
