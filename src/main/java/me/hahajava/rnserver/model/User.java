@@ -14,11 +14,12 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long no;
+	@Column(name = "no")
+	private Long userNo;
 
 	@NotNull
 	@Column(nullable = false, unique = true)
-	private String userId;
+	private String id;
 
 	@NotNull
 	@Column(nullable = false)
