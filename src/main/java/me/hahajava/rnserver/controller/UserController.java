@@ -1,6 +1,6 @@
 package me.hahajava.rnserver.controller;
 
-import me.hahajava.rnserver.model.User;
+import me.hahajava.rnserver.model.UserAccount;
 import me.hahajava.rnserver.persistence.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,20 +20,20 @@ public class UserController {
 	private PasswordEncoder passwordEncoder;
 
 	@GetMapping("/user/{userId}")
-	public ResponseEntity<User> getUserProfile(@PathVariable String userId) {
+	public ResponseEntity<UserAccount> getUserProfile(@PathVariable String userId) {
 		return new ResponseEntity<>(userRepository.findById(userId), HttpStatus.OK);
 	}
 
 	@PostMapping("/user")
-	public ResponseEntity<String> addUserProfile(@RequestBody @Valid User user, BindingResult br) {
+	public ResponseEntity<String> addUserProfile(@RequestBody @Valid UserAccount userAccount, BindingResult br) {
 		if (br.hasErrors()) {
 			return new ResponseEntity<>(br.getAllErrors().get(0).toString(), HttpStatus.BAD_REQUEST);
 		}
 
-		String cryptPassword = passwordEncoder.encode(user.getUserPw());
-		user.setUserPw(cryptPassword);
+		String cryptPassword = passwordEncoder.encode(userAccount.getPw());
+		userAccount.setPw(cryptPassword);
 
-		userRepository.save(user);
+		userRepository.save(userAccount);
 		return new ResponseEntity<>("success", HttpStatus.OK);
 	}
 

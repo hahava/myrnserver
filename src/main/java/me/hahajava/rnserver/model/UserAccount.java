@@ -6,33 +6,29 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Getter
 @Setter
-public class User {
+public class UserAccount {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = IDENTITY)
 	@JsonProperty(access = READ_ONLY)
 	@Column(name = "no")
-	private Long userNo;
+	private Long no;
 
-	@NotNull
 	@Column(nullable = false, unique = true)
 	private String id;
 
-	@NotNull
 	@Column(nullable = false)
-	private String userPw;
-
-	@NotNull
-	private String token;
+	private String pw;
 
 	@JsonIgnore
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "userAccount", cascade = ALL)
 	private Profile profile;
 }
