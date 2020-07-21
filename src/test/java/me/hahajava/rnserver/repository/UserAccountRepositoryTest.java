@@ -1,6 +1,6 @@
 package me.hahajava.rnserver.repository;
 
-import me.hahajava.rnserver.model.User;
+import me.hahajava.rnserver.model.UserAccount;
 import me.hahajava.rnserver.persistence.UserRepository;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class UserRepositoryTest {
+public class UserAccountRepositoryTest {
 
 	@Autowired
 	private UserRepository userRepository;
@@ -19,10 +19,9 @@ public class UserRepositoryTest {
 	@Ignore
 	@Test
 	public void addUserProfile() {
-		User user = new User();
-		user.setUserPw("1234");
-		user.setToken("35345dgefgsdv4wy245tdsfg");
+		UserAccount userAccount = new UserAccount();
+		userAccount.setPw("1234");
 
-		userRepository.save(user);
+		userRepository.save(userAccount);
 	}
 }

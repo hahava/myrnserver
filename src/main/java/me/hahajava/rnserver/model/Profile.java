@@ -32,5 +32,5 @@ public class Profile {
 	@MapsId
 	@JsonUnwrapped
 	@JsonProperty(access = WRITE_ONLY)
-	private User user;
+	private UserAccount userAccount;
 }
