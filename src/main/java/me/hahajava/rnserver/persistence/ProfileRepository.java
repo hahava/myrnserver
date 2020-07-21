@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface ProfileRepository extends CrudRepository<Profile, Long> {
-	Profile findByUserId(String userId);
+	Profile findByUserAccountId(String userId);
 
 	@Transactional
 	@Modifying
