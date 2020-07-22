@@ -33,6 +33,9 @@ public class UserAccount {
 	@OneToOne(mappedBy = "userAccount", cascade = ALL, fetch = LAZY)
 	private Profile profile;
 
+	@Enumerated(value = EnumType.STRING)
+	private AuthLevel authLevel;
+
 	public static UserAccount newInstanceForRegister(UserAccount userAccount) {
 		UserAccount account = new UserAccount();
 		account.setId(userAccount.getId());
