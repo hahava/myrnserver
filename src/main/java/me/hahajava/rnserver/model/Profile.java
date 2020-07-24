@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -20,13 +21,15 @@ public class Profile {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "no")
-	private Long profileNo;
+	private Long no;
 
 	@NotNull
 	private String userName;
 
 	@NotNull
 	private String phoneNo;
+
+	private String selfIntroduce;
 
 	@OneToOne
 	@MapsId
