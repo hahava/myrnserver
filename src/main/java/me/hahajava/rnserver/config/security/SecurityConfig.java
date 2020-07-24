@@ -2,6 +2,7 @@ package me.hahajava.rnserver.config.security;
 
 import lombok.AllArgsConstructor;
 import me.hahajava.rnserver.config.filter.JwtAuthorizationFilter;
+import me.hahajava.rnserver.model.AuthLevel;
 import me.hahajava.rnserver.persistence.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/auth/**", "/h2-console/**").permitAll();
-        http.authorizeRequests().antMatchers("/api/**").hasAnyAuthority();
+        http.authorizeRequests().antMatchers("/api/**").hasAnyAuthority(AuthLevel.NORMAL.name(), AuthLevel.ADMIN.name());
         http.addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository));
         http.httpBasic().disable().cors().disable().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.headers().frameOptions().disable();

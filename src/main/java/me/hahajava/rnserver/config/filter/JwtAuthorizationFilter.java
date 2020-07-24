@@ -5,6 +5,7 @@ import me.hahajava.rnserver.persistence.UserRepository;
 import me.hahajava.rnserver.util.JwtUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -13,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Set;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
@@ -35,7 +37,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         String userId = JwtUtil.decodeJwtToString(token);
         if (userId != null) {
             UserAccount account = userRepository.findById(userId);
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(account.getId(), account.getAuthLevel());
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(account.getId(), account.getPw(), Set.of(new SimpleGrantedAuthority(account.getAuthLevel().name())));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
 

@@ -36,4 +36,10 @@ public class Profile {
 	@JsonUnwrapped
 	@JsonProperty(access = WRITE_ONLY)
 	private UserAccount userAccount;
+
+	public static Profile newInstanceAsProfile(Profile newProfile){
+		newProfile.setNo(null);
+		return newProfile;
+	}
+	
 }
