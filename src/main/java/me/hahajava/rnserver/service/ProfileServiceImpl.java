@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.hahajava.rnserver.model.Profile;
 import me.hahajava.rnserver.model.UserAccount;
 import me.hahajava.rnserver.persistence.ProfileRepository;
-import me.hahajava.rnserver.persistence.UserRepository;
+import me.hahajava.rnserver.persistence.AuthRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,13 +14,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
 
-    private final UserRepository userRepository;
+    private final AuthRepository authRepository;
     private final ProfileRepository profileRepository;
 
     @Transactional
     @Override
     public void addUserProfile(Profile newProfile, String userId) {
-        Optional<UserAccount> userAccount = Optional.of(userRepository.findById(userId));
+        Optional<UserAccount> userAccount = Optional.of(authRepository.findById(userId));
         newProfile.setUserAccount(userAccount.get());
         Profile profile = Profile.newInstanceAsProfile(newProfile);
         profileRepository.save(profile);

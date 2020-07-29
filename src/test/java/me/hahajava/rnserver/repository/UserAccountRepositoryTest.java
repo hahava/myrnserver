@@ -1,7 +1,7 @@
 package me.hahajava.rnserver.repository;
 
 import me.hahajava.rnserver.model.UserAccount;
-import me.hahajava.rnserver.persistence.UserRepository;
+import me.hahajava.rnserver.persistence.AuthRepository;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class UserAccountRepositoryTest {
 
 	@Autowired
-	private UserRepository userRepository;
+	private AuthRepository authRepository;
 
 	@Ignore
 	@Test
@@ -22,6 +22,6 @@ public class UserAccountRepositoryTest {
 		UserAccount userAccount = new UserAccount();
 		userAccount.setPw("1234");
 
-		userRepository.save(userAccount);
+		authRepository.save(userAccount);
 	}
 }
