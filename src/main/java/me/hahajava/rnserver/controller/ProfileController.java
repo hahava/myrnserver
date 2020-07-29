@@ -1,11 +1,9 @@
 package me.hahajava.rnserver.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.hahajava.rnserver.model.Profile;
-import me.hahajava.rnserver.model.UserAccount;
-import me.hahajava.rnserver.persistence.ProfileRepository;
-import me.hahajava.rnserver.persistence.UserRepository;
+import me.hahajava.rnserver.service.ProfileService;
 import me.hahajava.rnserver.util.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,16 +14,13 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import static java.util.Optional.ofNullable;
-
 @Slf4j
 @RestController
 @RequestMapping("/api")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ProfileController {
 
-	private final ProfileRepository profileRepository;
-	private final UserRepository userRepository;
+	private final ProfileService profileService;
 
 	@ExceptionHandler(NoSuchElementException.class)
 	public Map<String, String> wrongParameterResponse(Exception e) {
@@ -36,37 +31,39 @@ public class ProfileController {
 	@GetMapping("/profile")
 	public ResponseEntity<Profile> getProfile(HttpServletRequest request) {
 		String userId = JwtUtil.decodeJwtToString(request.getHeader(JwtUtil.HEADER_KEY));
-		return new ResponseEntity<>(profileRepository.findByUserAccountId(userId), HttpStatus.OK);
+
+		try {
+			Profile profile = profileService.getUserProfile(userId);
+			return new ResponseEntity<>(profile, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@PostMapping("/profile")
 	public Map<String, String> addProfile(@RequestBody Profile newProfile, HttpServletRequest request) {
 		String userId = JwtUtil.decodeJwtToString(request.getHeader(JwtUtil.HEADER_KEY));
-		UserAccount userAccount = ofNullable(userRepository.findById(userId)).orElseThrow(NoSuchElementException::new);
-		newProfile.setUserAccount(userAccount);
 
 		try {
-			profileRepository.save(Profile.newInstanceAsProfile(newProfile));
+			profileService.addUserProfile(newProfile, userId);
+			return Map.of("message", "success");
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return Map.of("message", "profile 이 존재합니다.");
 		}
-
-		return Map.of("message", "success");
 	}
 
 	@PutMapping("/profile")
 	public Map<String, String> changeProfile(@RequestBody Profile newProfile, HttpServletRequest request) {
 		String userId = JwtUtil.decodeJwtToString(request.getHeader(JwtUtil.HEADER_KEY));
 
-		Profile profile = ofNullable(profileRepository.findByUserAccountId(newProfile.getUserAccount().getId()))
-			.orElseThrow(() -> new NoSuchElementException("User 정보를 확인 할 수 없습니다."));
-
-		ofNullable(newProfile.getPhoneNo()).ifPresent(profile::setPhoneNo);
-		ofNullable(newProfile.getUserName()).ifPresent(profile::setUserName);
-
-		profileRepository.save(profile);
-		return Collections.singletonMap("message", "succes");
+		try {
+			profileService.updateUserProfile(newProfile, userId);
+			return Collections.singletonMap("message", "succes");
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return Collections.singletonMap("message", "not changed");
+		}
 	}
-
 }

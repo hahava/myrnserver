@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import java.util.Optional;
+
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 
 @Entity
@@ -41,5 +43,11 @@ public class Profile {
 		newProfile.setNo(null);
 		return newProfile;
 	}
-	
+
+	public static void updateInstanceAsProfile(Profile oldProfile, Profile newProfile) {
+		Optional.ofNullable(newProfile.getPhoneNo()).ifPresent(oldProfile::setPhoneNo);
+		Optional.ofNullable(newProfile.getUserName()).ifPresent(oldProfile::setUserName);
+		Optional.ofNullable(newProfile.getSelfIntroduce()).ifPresent(oldProfile::setSelfIntroduce);
+	}
+
 }
