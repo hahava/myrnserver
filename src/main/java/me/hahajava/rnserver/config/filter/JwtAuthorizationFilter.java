@@ -1,7 +1,7 @@
 package me.hahajava.rnserver.config.filter;
 
 import me.hahajava.rnserver.model.UserAccount;
-import me.hahajava.rnserver.persistence.UserRepository;
+import me.hahajava.rnserver.persistence.AuthRepository;
 import me.hahajava.rnserver.util.JwtUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,11 +18,11 @@ import java.util.Set;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private UserRepository userRepository;
+    private AuthRepository authRepository;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserRepository userRepository) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, AuthRepository authRepository) {
         super(authenticationManager);
-        this.userRepository = userRepository;
+        this.authRepository = authRepository;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         String userId = JwtUtil.decodeJwtToString(token);
         if (userId != null) {
-            UserAccount account = userRepository.findById(userId);
+            UserAccount account = authRepository.findById(userId);
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(account.getId(), account.getPw(), Set.of(new SimpleGrantedAuthority(account.getAuthLevel().name())));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
