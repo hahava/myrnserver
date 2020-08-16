@@ -33,7 +33,7 @@ public class AuthController {
     public ResponseEntity<String> doLogin(@RequestBody @Valid LoginRequestDTO loginRequestDTO, BindingResult br) {
 
         if (br.hasErrors()) {
-            final String errMsg = br.getAllErrors().get(0).getDefaultMessage();
+            String errMsg = br.getAllErrors().get(0).getDefaultMessage();
             log.error(errMsg + "\t" + loginRequestDTO.toString());
             return ResponseEntity.status(BAD_REQUEST).body(errMsg);
         }
@@ -52,7 +52,7 @@ public class AuthController {
     public ResponseEntity<String> addUserAccount(@RequestBody @Valid RegisterRequestDTO registerRequestDTO, BindingResult br) {
 
         if (br.hasErrors()) {
-            final String errMsg = br.getAllErrors().get(0).getDefaultMessage();
+            String errMsg = br.getAllErrors().get(0).getDefaultMessage();
             log.error(errMsg + "\t" + registerRequestDTO.toString());
             return ResponseEntity.status(BAD_REQUEST).body(errMsg);
         }

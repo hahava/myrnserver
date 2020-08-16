@@ -9,11 +9,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl {
+public class AuthServiceImpl implements AuthService {
 
     private final PasswordEncoder passwordEncoder;
     private final AuthRepository authRepository;
 
+    @Override
     public void addUserAccount(RegisterRequestDTO userAccount) {
         UserAccount account = UserAccount.newInstanceForRegister(userAccount);
         final String cryptPassword = passwordEncoder.encode(userAccount.getPw());

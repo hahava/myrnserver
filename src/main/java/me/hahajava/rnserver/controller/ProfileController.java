@@ -22,12 +22,6 @@ public class ProfileController {
 
 	private final ProfileService profileService;
 
-	@ExceptionHandler(NoSuchElementException.class)
-	public Map<String, String> wrongParameterResponse(Exception e) {
-		log.error(e.getMessage());
-		return Map.of("message", "error");
-	}
-
 	@GetMapping("/profile")
 	public ResponseEntity<Profile> getProfile(HttpServletRequest request) {
 		String userId = JwtUtil.decodeJwtToString(request.getHeader(JwtUtil.HEADER_KEY));
