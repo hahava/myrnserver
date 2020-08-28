@@ -17,7 +17,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> exceptionResponse(Exception ex) {
-        log.error(ex.getMessage());
+        log.error(ex.getMessage(), ex.getCause());
         return ResponseEntity
                 .status(INTERNAL_SERVER_ERROR)
                 .body(DEFAULT_ERROR.message);
@@ -28,7 +28,7 @@ public class RestExceptionHandler {
      */
     @ExceptionHandler(InternalAuthenticationServiceException.class)
     public ResponseEntity<String> noLoginData(InternalAuthenticationServiceException ex) {
-        log.error(ex.getMessage());
+        log.error(ex.getMessage(), ex.getCause());
         return ResponseEntity
                 .status(FORBIDDEN)
                 .body(NO_LOGIN_DATA.message);
@@ -39,9 +39,21 @@ public class RestExceptionHandler {
      */
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<String> wrongParameterResponse(NoSuchElementException ex) {
-        log.error(ex.getMessage());
+        log.error(ex.getMessage(), ex.getCause());
         return ResponseEntity
                 .status(BAD_REQUEST)
                 .body(BAD_REQUEST_PARAMETER.message);
+    }
+
+    /**
+     * {@link org.springframework.web.bind.annotation.GetMapping} 으로 요청시
+     * optional 객체의 of() 메서드 사용시 발생
+     */
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<String> noData(NullPointerException ex) {
+        log.error(ex.getMessage(), ex.getCause());
+        return ResponseEntity
+                .status(BAD_REQUEST)
+                .body(NO_DATA.message);
     }
 }
