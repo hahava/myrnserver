@@ -2,7 +2,7 @@ package me.hahajava.rnserver.config.security;
 
 import lombok.AllArgsConstructor;
 import me.hahajava.rnserver.model.UserAccount;
-import me.hahajava.rnserver.persistence.UserRepository;
+import me.hahajava.rnserver.persistence.AuthRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,11 +16,11 @@ import java.util.Set;
 @AllArgsConstructor
 public class SecurityDetailService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final AuthRepository authRepository;
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        UserAccount account = userRepository.findById(userId);
+        UserAccount account = authRepository.findById(userId);
         return new User(account.getId(), account.getPw(), Set.of(new SimpleGrantedAuthority(account.getAuthLevel().name())));
     }
 }

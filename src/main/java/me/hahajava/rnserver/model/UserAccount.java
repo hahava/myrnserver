@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import me.hahajava.rnserver.model.request.RegisterRequestDTO;
 
 import javax.persistence.*;
 
@@ -36,10 +37,10 @@ public class UserAccount {
 	@Enumerated(value = EnumType.STRING)
 	private AuthLevel authLevel;
 
-	public static UserAccount newInstanceForRegister(UserAccount userAccount) {
+	public static UserAccount newInstanceForRegister(RegisterRequestDTO registerRequestDTO) {
 		UserAccount account = new UserAccount();
-		account.setId(userAccount.getId());
-		account.setPw(userAccount.getPw());
+		account.setId(registerRequestDTO.getId());
+		account.setPw(registerRequestDTO.getPw());
 		return account;
 	}
 }
