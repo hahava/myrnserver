@@ -1,9 +1,9 @@
 package me.hahajava.rnserver.service;
 
-import me.hahajava.rnserver.model.UserAccount;
+import me.hahajava.rnserver.model.request.RegisterRequestDTO;
 
 public interface AuthService {
 
-    void addUserAccount(UserAccount userAccount);
+    void addUserAccount(RegisterRequestDTO registerRequestDTO);
 
 }
