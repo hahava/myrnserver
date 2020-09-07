@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 public final class JwtUtil {
 
-    public static final String HEADER_KEY = "heeman";
+    public static final String HEADER_KEY = "jwt-auth";
     public static final String SECRET_KEY = "secret";
     public static final String TOKEN_PREFIX = "auth";
 
