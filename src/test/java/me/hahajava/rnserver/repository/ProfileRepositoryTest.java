@@ -32,11 +32,12 @@ public class ProfileRepositoryTest {
 
     @Test
     public void addProfileTest() {
-        Profile profile = new Profile();
-        profile.setPhoneNo("010-1234-5678");
+        Profile profile = Profile.builder()
+                .phoneNo("010-1234-5678")
+                .userName("havana")
+                .selfIntroduce("my name is havana")
+                .build();
         profile.setUserAccount(mockAccount);
-        profile.setSelfIntroduce("my name is havana");
-        profile.setUserName("havana");
 
         profileRepository.save(profile);
     }

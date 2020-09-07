@@ -2,14 +2,10 @@ package me.hahajava.rnserver.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import org.springframework.context.annotation.Configuration;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
 import java.util.Optional;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
@@ -17,12 +13,11 @@ import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 @Entity
 @Getter
 @Setter
-@ToString
+@NoArgsConstructor
 public class Profile {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "no")
 	private Long no;
 
 	@NotNull
@@ -50,4 +45,10 @@ public class Profile {
 		Optional.ofNullable(newProfile.getSelfIntroduce()).ifPresent(oldProfile::setSelfIntroduce);
 	}
 
+    @Builder
+	Profile(String userName, String phoneNo, String selfIntroduce) {
+        this.userName = userName;
+        this.phoneNo = phoneNo;
+        this.selfIntroduce = selfIntroduce;
+    }
 }

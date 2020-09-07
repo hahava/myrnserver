@@ -24,7 +24,7 @@ public class ProfileController {
 	public ResponseEntity<Profile> getProfile(HttpServletRequest request) {
 		String userId = JwtUtil.decodeJwtToString(request.getHeader(JwtUtil.HEADER_KEY));
 		Profile profile = profileService.getUserProfile(userId);
-		return new ResponseEntity<>(profile, OK);
+        return ResponseEntity.status(OK).body(profile);
 	}
 
 	@PostMapping("/profile")

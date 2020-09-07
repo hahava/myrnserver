@@ -1,0 +1,29 @@
+//variable
+:basedir: {docdir}/../../../
+:snippets: {basedir}/target/generated-snippets
+:sources-root: {basedir}/src
+:resources: {sources-root}/main/resources
+:resources-test: {sources-root}/test/resources
+:java: {sources-root}/main/java
+:java-test: {sources-root}/test/java
+
+// left-navigation
+= Rest API docs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectnums:
+:sectlinks:
+:sectanchors:
+// content
+
+== Auth
+
+=== login
+
+include::{snippets}/auth/http-request.adoc[]
+include::{snippets}/auth/request-fields.adoc[]
+include::{snippets}/auth/http-response.adoc[]
+include::{snippets}/auth/response-fields.adoc[]

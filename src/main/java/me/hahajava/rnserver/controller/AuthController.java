@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -30,12 +31,12 @@ public class AuthController {
     private final AuthServiceImpl authService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> doLogin(@RequestBody @Valid LoginRequestDTO loginRequestDTO, BindingResult br) {
+    public ResponseEntity<Map<String, String>> doLogin(@RequestBody @Valid LoginRequestDTO loginRequestDTO, BindingResult br) {
 
         if (br.hasErrors()) {
             String errMsg = br.getAllErrors().get(0).getDefaultMessage();
             log.error(errMsg + "\t" + loginRequestDTO.toString());
-            return ResponseEntity.status(BAD_REQUEST).body(errMsg);
+            return ResponseEntity.status(BAD_REQUEST).body(Map.of("message", errMsg));
         }
 
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(loginRequestDTO.getId(), loginRequestDTO.getPw());
@@ -45,7 +46,7 @@ public class AuthController {
         }
 
         final String token = JwtUtil.encodeStringToJwt(loginRequestDTO.getId());
-        return ResponseEntity.status(ACCEPTED).body(token);
+        return ResponseEntity.status(ACCEPTED).body(Map.of("token", token));
     }
 
     @PostMapping("/register")
